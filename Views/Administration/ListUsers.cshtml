@@ -1,0 +1,75 @@
+﻿@model IEnumerable<ApplicationUser>
+@{
+    ViewBag.Title = "Todos os usuários";
+}
+<h2>Usuários</h2>
+@if (Model.Any())
+{
+    <a class="btn btn-primary mb-3" style="width:auto" asp-action="Register"
+       asp-controller="Account">Novo Usuário</a>
+
+    <table class="table table-dark">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Usuario</th>
+                <th>Cidade</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var user in Model)
+            {
+
+                <tr>
+                    <td>@user.Id</td>
+                    <td>@user.UserName</td>
+                    <td>@user.Cidade</td>
+                    <td>
+                        <a asp-action="EditUser" asp-controller="Administration"
+                           asp-route-id="@user.Id" class="btn btn-primary">Edit</a>
+                    </td>
+                    <td>
+
+                        <form method="post" asp-action="DeleteRole" asp-route-id="@user.Id">
+
+
+                            <span id="confirmaDeleteSpan_@user.Id" style="display:none">
+                                <span>Confirma a exclusão desta role ?</span>
+                                <button type="submit" class="btn btn-danger">Sim</button>
+                                <a href="#" class="btn btn-primary"
+                                   onclick="confirmaDelete('@user.Id', false)">Não</a>
+                            </span>
+                            <span id="deleteSpan_@user.Id">
+                                <a href="#" class="btn btn-danger"
+                                   onclick="confirmaDelete('@user.Id', true)">Deletar</a>
+                            </span>
+                        </form>
+                    </td>
+
+                </tr>
+
+            }
+
+        </tbody>
+
+    </table>
+
+
+}
+else
+{
+    <div class="card">
+        <div class="card-header">
+            Usuarios sem Registro
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">
+                Use o botão abaixo para criar novo usuário
+            </h5>
+            <a class="btn btn-primary" style="width:auto"
+               asp-controller="Account" asp-action="Register">
+                Criar novo usuário
+            </a>
+        </div>
+    </div>
+}
